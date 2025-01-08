@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Surprise for Akansha</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #1f1f1f;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    .cake {
+      font-size: 120px;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+
+    h1, .message {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .message {
+      font-size: 1.5rem;
+      color: #ff6347;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .message .emoji {
+      position: absolute;
+      animation: float 3s infinite ease-in-out;
+    }
+
+    .emoji1 {
+      left: -30px;
+      animation-delay: 0.5s;
+    }
+
+    .emoji2 {
+      right: -30px;
+      animation-delay: 1s;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-30px) rotate(15deg);
+      }
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ff6347;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff4500;
+      transform: scale(1.1);
+    }
+
+    #video-surprise, #countdown {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Birthday Cake Section -->
+    <div id="birthday-cake" class="cake">🎂</div>
+
+    <!-- Blow Candles Button -->
+    <button id="blow-candles" onclick="blowCandles()">Blow out the candles!</button>
+
+    <!-- Birthday Wish Section -->
+    <h1 id="happy-birthday">Happy Birthday Akansha! 🎉</h1>
+    <div id="birthday-message" class="message">
+      <span class="emoji emoji1">🎈</span>
+      <span class="emoji emoji2">🎉</span>
+      <p>Wishing you a fantastic year ahead, Akansha! 🌟🎂🎁</p>
+    </div>
+
+    <!-- Surprise Button -->
+    <button id="get-surprise" style="display:none;" onclick="startGame()">Want to get the surprise?</button>
+
+    <!-- Game Section -->
+    <div id="game-section" style="display: none;">
+      <p>Guess the special number to unlock your surprise!</p>
+      <input type="number" id="guess" placeholder="Enter your guess">
+      <button onclick="checkGuess()">Submit</button>
+      <button onclick="showHint()">Hint</button>
+      <p id="game-feedback" style="color: yellow; margin-top: 10px;"></p>
+    </div>
+
+    <!-- Countdown Section -->
+    <div id="countdown" style="font-size: 2rem; color: yellow;">
+      Here is your surprise in <span id="timer">3</span> seconds...
+    </div>
+
+    <!-- Video Surprise Section -->
+    <div id="video-surprise">
+      <iframe width="600" height="400" src="https://drive.google.com/file/d/1qU3xAZEoswbeg5NfKI7GBns1h5a4aTBb/preview" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    const birthdate = 122006; // Set Akansha's birthdate as the special number
+
+    function blowCandles() {
+      // Hide the birthday cake and button
+      document.getElementById("birthday-cake").style.display = "none";
+      document.getElementById("blow-candles").style.display = "none";
+
+      // Show "Happy Birthday" message
+      setTimeout(() => {
+        document.getElementById("happy-birthday").style.opacity = "1";
+
+        // Show the birthday message after the heading
+        setTimeout(() => {
+          document.getElementById("birthday-message").style.opacity = "1";
+
+          // Show the surprise button
+          setTimeout(() => {
+            document.getElementById("get-surprise").style.display = "inline-block";
+          }, 1500);
+        }, 1500);
+      }, 1500);
+    }
+
+    function startGame() {
+      document.getElementById("get-surprise").style.display = "none";
+      document.getElementById("game-section").style.display = "block";
+    }
+
+    function checkGuess() {
+      const userGuess = parseInt(document.getElementById("guess").value);
+      const feedback = document.getElementById("game-feedback");
+
+      if (userGuess === birthdate) {
+        feedback.textContent = "Correct! Get ready for your surprise! 🎉";
+        document.getElementById("game-section").style.display = "none";
+        startCountdown();
+      } else {
+        feedback.textContent = "Incorrect! Try again.";
+      }
+    }
+
+    function showHint() {
+      alert("Hint: It's your birthdate! 🎂");
+    }
+
+    function startCountdown() {
+      const countdownElement = document.getElementById("countdown");
+      const timerElement = document.getElementById("timer");
+
+      let countdown = 3;
+      countdownElement.style.display = "block";
+
+      const countdownInterval = setInterval(() => {
+        countdown -= 1;
+        timerElement.textContent = countdown;
+
+        if (countdown === 0) {
+          clearInterval(countdownInterval);
+          countdownElement.style.display = "none";
+          document.getElementById("video-surprise").style.display = "block";
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
